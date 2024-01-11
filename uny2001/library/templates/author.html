@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Информация об авторе
+{% endblock %}
+
+{% block body_content %}
+<div class="container">
+    <div class="profile">
+        <div class="profile-picture">
+        <!-- Placeholder or your image source here -->
+        <!-- <img src="profile-picture-1.jpg" alt="Profile Picture"> -->
+        </div>
+        <div class="person-info">
+            <p>Фамилия: {{author.surname}}</p>
+            <p>Имя: {{author.name}}</p>
+            <p>Имя: {{author.middlename}}</p>
+            <p>Дата рождения {{author.birthday}}</p>
+            {% if books %}
+                <p>Книги этого автора:</p>
+                <ul>
+                {% for book in books %}
+                    <li><a href="{% url 'book' book.id %}">{{ book.name }}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>У этого автора еще нет книг</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

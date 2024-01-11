@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_content%}
+    <div class="search-container">
+        <form action="{% url 'search' %}" method="post">
+            {% csrf_token %}
+            <input type="text" class="search-bar" placeholder="Поиск по названию книги...">
+            <button type="submit">Поиск</button>
+        </form>
+    </div>
+    {% if books %}
+        {% for book in books %}
+            <div class="container">
+                <div class="profile">
+                    <div class="profile-picture">
+                    <!-- Placeholder or your image source here -->
+                     <img src="{% static 'covers' %}/{{book.cover_filename}}.jpg" alt="Обложка книги">
+                    </div>
+                    <div class="person-info">
+                    <a href="{% url 'book' book.book_id %}"><h1>{{book.book_name}}</h1></a>
+                    <p>ISBN: {{book.isbn}}</p>
+                    <p>Авторы: 
+                        {% for author in book.authors %}
+                            <a href="{% url 'author' author.id %}">{{author.initials}} {{author.surname}}</a>
+                        {% endfor %}
+                    </p>
+                    <p>Страниц: {{ book.pages}}</p>
+                    <p>Возрастное ограничение: {{ book.restirction}}</p>
+                    <p>Описание: {{ book.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>There no books in library</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Данные о студенте
+{% endblock %}
+
+{% block body_content %}
+
+<div class="container">
+    <div class="profile">
+        <div class="profile-picture">
+        <!-- Placeholder or your image source here -->
+        <!-- <img src="profile-picture-1.jpg" alt="Profile Picture"> -->
+        </div>
+        <div class="person-info">
+            <p>Фамилия: {{student.surname}}</p>
+            <p>Имя: {{student.name}}</p>
+            <p>Отчество: {{student.middlename}}</p>
+            <p>Дата рождения: {{student.birthday}}</p>
+            <p>Email: {{ student.email }}</p>
+
+            {% if books %}
+            Забронированые книги:
+                <ul>
+                {% for book in books %}
+                    <li><a href="{% url 'book' book.id %}">{{ book.name }}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Нет забронированных книг</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock%}

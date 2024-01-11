@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Информация о книге
+{% endblock %}
+
+{% block body_content %}
+{% load static %}
+
+<div class="container">
+    <div class="profile">
+        <div class="profile-picture">
+        <!-- Placeholder or your image source here -->
+        <img src="{% static 'covers' %}/{{book.cover_filename}}.jpg" alt="Обложка книги">
+        </div>
+        <div class="person-info">
+            <p>ISBN: {{book.isbn}}</p>
+            <p>Название: {{book.name}}</p>
+            <p>Издана: {{book.published_date}}</p>
+            <p>Страниц: {{book.pages}}</p>
+            <p>Ограничение по возрасту: {{book.age_restriction}}</p>
+            {% if authors %}
+            <p>Авторы:</p>
+                <ul>
+                {% for author in authors %}
+                    <li><a href="{% url 'author' author.id %}">{{author.name}} {{ author.surname}}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Автор неизвестен</p>
+            {% endif %}
+            <p>Описание: {{book.description}}</p>
+            {% if rented_by.id == request.session.student_id %}
+                <p>Книга забронирована: <a href="{% url 'student' rented_by.id %}">{{rented_by}}</a></p>
+                <form action="{% url 'returning' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Вернуть книгу</button> 
+                </form>
+            {% else %}
+                <form action="{% url 'booking' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Забронировать книгу</button> 
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+    
+{% endblock %}
